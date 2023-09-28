@@ -18,7 +18,7 @@ fun Hero(hero: Hero) {
             painter = painterResource(hero.painter),
             contentDescription = null,
             modifier = Modifier
-                .size(48.dp)
+                .size(128.dp)
                 .graphicsLayer {
                     rotationY = 180f
                 }
@@ -27,8 +27,7 @@ fun Hero(hero: Hero) {
         Image(
             painter = painterResource(hero.painter),
             contentDescription = null,
-            modifier = Modifier.size(48.dp)
+            modifier = Modifier.size(128.dp)
         )
     }
-
 }

@@ -7,21 +7,29 @@ import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.key.*
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Window
-import androidx.compose.ui.window.application
-import androidx.compose.ui.window.rememberWindowState
+import androidx.compose.ui.window.*
+
 import compose.Hero
 import data.Game
 import data.Hero
 import data.HeroState
-import java.awt.SystemColor.text
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
     application {
+        val windowState = rememberWindowState(
+            placement = WindowPlacement.Floating,
+            isMinimized = false,
+            position = WindowPosition.PlatformDefault,
+            size = DpSize(200.dp, 200.dp)
+        )
+
         val game = remember { Game() }
         LaunchedEffect(Unit) {
             while (true) {
@@ -33,12 +41,11 @@ fun main() {
 
         Window(
             onCloseRequest = ::exitApplication,
-            state = rememberWindowState(size = DpSize(200.dp, 200.dp)),
+            state = windowState,
             onKeyEvent = {
-//                if (it.type == KeyEventType.KeyDown) {
-                when(it.type) {
+                when (it.type) {
                     KeyEventType.KeyDown -> {
-                        when(it.key) {
+                        when (it.key) {
                             Key.A -> {
                                 println("A")
                                 game.hero.move(HeroState.MOVE_LEFT)
@@ -51,60 +58,37 @@ fun main() {
                                 true
                             }
 
+                            Key.Spacebar -> {
+                                println("Spacebar")
+                                game.hero.move(HeroState.JUMP)
+                                true
+                            }
+
+                            Key.W -> {
+                                println("W")
+                                game.hero.move(HeroState.JUMP)
+                                true
+                            }
+
                             Key.S -> {
                                 println("S")
                                 game.hero.move(HeroState.CROUCH_IDLE)
                                 true
                             }
+
+                            else -> {
+                                false
+                            }
                         }
-                        false
                     }
 
                     KeyEventType.KeyUp -> {
                         game.hero.move(HeroState.IDLE)
                         true
                     }
+
                     else -> false
                 }
-
-//                when (it.key) {
-//                    Key.A -> {
-//                        println("A")
-//                        game.hero.move(HeroState.MOVE_LEFT)
-//                        true
-//                    }
-//
-//                    Key.D -> {
-//                        println("D")
-//                        game.hero.move(HeroState.MOVE_RIGHT)
-//                        true
-//                    }
-//
-//                    Key.Spacebar -> {
-//                        game.hero.move(HeroState.JUMP)
-//                        true
-//                    }
-//
-//                    Key.W -> {
-//                        game.hero.move(HeroState.JUMP)
-//                        true
-//                    }
-//
-//                    Key.S -> {
-//                        game.hero.move(HeroState.CROUCH)
-//                        true
-//                    }
-//
-//                    else -> {
-////                            println("IDLE 1")
-////                            game.hero.move(HeroState.IDLE)
-//                        false
-//                    }
-//                }
-//                } else {
-//                    game.hero.move(HeroState.IDLE)
-//                    false
-//                }
             }
         ) {
             Box(

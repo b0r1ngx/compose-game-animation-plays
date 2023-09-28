@@ -59,6 +59,7 @@ class Hero: GameObject {
 
     var painter by mutableStateOf(runFrames.first())
     var state by mutableStateOf(HeroState.IDLE)
+    var inAir by mutableStateOf(false)
 
     // hero have 8 parts, lets try to it be in 1 second
     private var totalDelta = 0f
